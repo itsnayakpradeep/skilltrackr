@@ -1,11 +1,3 @@
-// import { Inter } from "next/font/google";
-
-// export const inter = Inter({
-//     subsets: ['latin'],
-//     weight: ['400', '500', '700'], // adjust weights you need
-//     variable: '--font-inter',      // CSS variable name
-// });
-
 export const typography = {
     fontFamily: {
         primary: 'sans-serif', // Fallback for sans-serif
@@ -33,3 +25,9 @@ export const typography = {
         bold: '700',
     }
 }
+
+// // ES6 export for TypeScript usage
+// export { typography };
+
+// // CommonJS export for Tailwind config
+// module.exports = { typography };

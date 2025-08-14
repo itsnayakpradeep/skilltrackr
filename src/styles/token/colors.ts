@@ -10,3 +10,9 @@ export const colors = {
     border: "#E5E7EB", // Gray 200
     danger: "#DC2626", // Red 600
 };
+
+// // ES6 export for TypeScript usage
+// export { colors };
+
+// // CommonJS export for Tailwind config
+// module.exports = { colors };

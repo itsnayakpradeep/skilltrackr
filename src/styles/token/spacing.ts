@@ -5,3 +5,9 @@ export const spacing = {
     lg: "1.5rem",  // 24px
     xl: "2rem",    // 32px
 }
+
+// // ES6 export for TypeScript usage
+// export { spacing };
+
+// // CommonJS export for Tailwind config
+// module.exports = { spacing };

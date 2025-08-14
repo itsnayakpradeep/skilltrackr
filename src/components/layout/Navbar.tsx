@@ -6,7 +6,7 @@ import Button from "@components/ui/Button";
 
 export default function Navbar() {
     return (
-    <nav className="bg-white shadow-md sticky top-0 z-50" id="navbar-main">
+    <nav className="w-full bg-white shadow-md sticky top-0 z-50" id="navbar-main">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16 px-4">
                 {/* Logo */}
@@ -15,9 +15,10 @@ export default function Navbar() {
                             <Image
                                 src="/SkillTrackrlogo.svg"
                                 alt="SkillTrackr-Logo"
-                                width={170}
-                                height={50}
-                                className="h-10 w-10"
+                                width={140}
+                                height={40}
+                                className="object-contain h-auto"
+                                priority
                             />
                         </Link>
                         
@@ -47,16 +48,11 @@ export default function Navbar() {
                 </div>
                 {/* Auth Buttons */}
                 <div className="inline-flex rounded-md shadow-sm" role="group">
-                    {/* <Link
-                        href="/login"
-                        className="loginButton">
-                        Login   
-                    </Link> */}
                     <Button 
                         href="/signup"
                         className="SignupButton"
                     >
-                        Sign up
+                        Get Started
                     </Button>
                 </div>
             </div>

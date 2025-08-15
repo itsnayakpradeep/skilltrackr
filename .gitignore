@@ -42,3 +42,10 @@ next-env.d.ts
 
 # Environment variables
 .env.local
+
+# Direction
+.direction
+direction.txt
+
+# OAuth credentials and secrets
+client_secret.json

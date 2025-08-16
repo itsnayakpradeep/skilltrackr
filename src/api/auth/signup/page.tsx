@@ -2,9 +2,11 @@
 import { useState } from "react";
 
 export default function SignUpPage() {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [form, setForm] = useState({
+        name: "",
+        email: "",
+        password: ""
+    })
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -14,12 +16,12 @@ export default function SignUpPage() {
         setSuccess("");
 
         try {
-            const response = await fetch('/api/auth/signup', {
+            const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify(form),
             });
 
             if (!response.ok) {
@@ -44,31 +46,34 @@ export default function SignUpPage() {
                 <h2 className="text-2xl font-bold mb-6">Create a new account</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Name</label>
+                        {/* <label className="block text-sm font-medium text-gray-700">Name</label> */}
                         <input
                             type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={form.name}
+                            onChange={(e) => setForm({...form, name: e.target.value})}
+                            placeholder="Name"
                             className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                             required
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Email</label>
+                        {/* <label className="block text-sm font-medium text-gray-700">Email</label> */}
                         <input
                             type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email"
+                            value={form.email}
+                            onChange={(e) => setForm({...form, email: e.target.value})}
                             className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                             required
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Password</label>
+                        {/* <label className="block text-sm font-medium text-gray-700">Password</label> */}
                         <input
                             type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Password"
+                            value={form.password}
+                            onChange={(e) => setForm({...form, password: e.target.value})}
                             className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                             required
                         />

@@ -6,9 +6,9 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import Button from "@components/ui/Button";
 
 export default function Navbar() {
-    const [isOpenMobilemenu, setIsOpenMobilemenu] = useState(false);  
+    const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false);  
     const toggleMobileMenu = () => {
-        setIsOpenMobilemenu(!isOpenMobilemenu);
+        setIsOpenMobileMenu(!isOpenMobileMenu);
     }
     return (
     <>
@@ -65,7 +65,7 @@ export default function Navbar() {
                             href="/signup"
                             className=""
                         >
-                            Sign us
+                            Sign up
                         </Button>
                     </div>
                     
@@ -76,7 +76,7 @@ export default function Navbar() {
                             className="text-gray-700 hover:text-primary focus:outline-none focus:text-primary"
                             aria-label="Toggle menu"
                         >
-                            {isOpenMobilemenu ? (
+                            {isOpenMobileMenu ? (
                                 <FaTimes size={24} />
                             ) : (
                                 <FaBars size={24} />
@@ -88,50 +88,67 @@ export default function Navbar() {
         </nav>
         
         {/* Mobile Menu */}
-        {isOpenMobilemenu && (
-            <div className="md:hidden bg-white shadow-lg absolute top-16 left-0 right-0 z-40">
-                <div className="px-4 py-4">
-                    <ul className="flex flex-col space-y-4">
-                        <li>
-                            <Link
-                                href="/features"
-                                className="block py-2 text-gray-700 hover:text-primary font-medium"
-                                onClick={toggleMobileMenu}
-                            >
-                                Features
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="/testimonial"
-                                className="block py-2 text-gray-700 hover:text-primary font-medium"
-                                onClick={toggleMobileMenu}
-                            >
-                                Testimonial
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="/price"
-                                className="block py-2 text-gray-700 hover:text-primary font-medium"
-                                onClick={toggleMobileMenu}
-                            >
-                                Price
-                            </Link>
-                        </li>
-                        <li>
-                            <Button
-                                href="/signup"
-                                className="w-full SignupButton"
-                                onClick={toggleMobileMenu}
-                            >
-                                Sign up
-                            </Button>
-                        </li>
-                    </ul>
+        <div 
+            className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ease-in-out ${
+                isOpenMobileMenu 
+                    ? 'opacity-100 pointer-events-auto' 
+                    : 'opacity-0 pointer-events-none'
+            }`}
+        >
+            {/* Backdrop */}
+            <div 
+                className="absolute inset-0 bg-black bg-opacity-50"
+                onClick={toggleMobileMenu}
+            />
+            
+            {/* Menu Content */}
+            <div className={`absolute top-0 left-0 right-0 bottom-0 bg-white transform transition-transform duration-300 ease-in-out ${
+                isOpenMobileMenu ? 'translate-x-0' : '-translate-x-full'
+            }`}>
+                <div className="h-full overflow-y-auto">
+                    <div className="px-4 py-6 pt-20">
+                        <ul className="flex flex-col space-y-6">
+                            <li>
+                                <Link
+                                    href="/features"
+                                    className="block py-3 text-lg text-gray-700 hover:text-primary font-medium"
+                                    onClick={toggleMobileMenu}
+                                >
+                                    Features
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/testimonial"
+                                    className="block py-3 text-lg text-gray-700 hover:text-primary font-medium"
+                                    onClick={toggleMobileMenu}
+                                >
+                                    Testimonial
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/price"
+                                    className="block py-3 text-lg text-gray-700 hover:text-primary font-medium"
+                                    onClick={toggleMobileMenu}
+                                >
+                                    Price
+                                </Link>
+                            </li>
+                            <li className="pt-4">
+                                <Button
+                                    href="/signup"
+                                    className="w-full SignupButton"
+                                    onClick={toggleMobileMenu}
+                                >
+                                    Sign up
+                                </Button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        )}
+        </div>
     </>
     );
 }

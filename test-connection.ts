@@ -8,7 +8,6 @@ async function testConnection() {
     if (!MONGODB_URI) {
         console.error('❌ MONGODB_URI is not properly configured in .env.local');
         console.log('💡 Please update your .env file with a valid MongoDB connection string');
-        console.log('📋 Example for MongoDB Atlas: mongodb+srv://username:password@cluster.mongodb.net/skilltrackr?retryWrites=true&w=majority');
         console.log('📋 Example for local MongoDB: mongodb://localhost:27017/******');
         process.exit(1);
     }

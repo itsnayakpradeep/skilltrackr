@@ -13,8 +13,6 @@ async function testConnection() {
         process.exit(1);
     }
     
-    console.log('🔗 Testing with MONGODB_URI:', MONGODB_URI);
-
     try {
         const connection = await connectToDB();
         console.log('✅ MongoDB connected successfully!');

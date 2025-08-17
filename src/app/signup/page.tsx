@@ -4,22 +4,37 @@ import Image from "next/image";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function LoginPage() {
+export default function SignUpPage() {
     const [form, setForm] = useState({
+        name: "",
         email: "",
-        password: ""
+        password: "",
+        confirmPassword: ""
     });
     const [errors, setErrors] = useState({
+        name: "",
         email: "",
-        password: ""
+        password: "",
+        confirmPassword: ""
     });
     const [loading, setLoading] = useState(false);
 
     const validateForm = () => {
         const newErrors = {
+            name: "",
             email: "",
-            password: ""
+            password: "",
+            confirmPassword: ""
         };
+        
+        // Name validation
+        if (!form.name.trim()) {
+            newErrors.name = "Name is required";
+        } else if (form.name.length < 2) {
+            newErrors.name = "Name must be at least 2 characters";
+        } else if (form.name.length > 50) {
+            newErrors.name = "Name must be less than 50 characters";
+        }
         
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,8 +47,17 @@ export default function LoginPage() {
         // Password validation
         if (!form.password) {
             newErrors.password = "Password is required";
-        } else if (form.password.length < 6) {
-            newErrors.password = "Password must be at least 6 characters";
+        } else if (form.password.length < 8) {
+            newErrors.password = "Password must be at least 8 characters";
+        } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(form.password)) {
+            newErrors.password = "Password must contain uppercase, lowercase, number and special character";
+        }
+        
+        // Confirm password validation
+        if (!form.confirmPassword) {
+            newErrors.confirmPassword = "Please confirm your password";
+        } else if (form.password !== form.confirmPassword) {
+            newErrors.confirmPassword = "Passwords do not match";
         }
         
         setErrors(newErrors);
@@ -50,30 +74,34 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(form),
+                body: JSON.stringify({
+                    name: form.name.trim(),
+                    email: form.email.trim(),
+                    password: form.password
+                }),
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                toast.error(data.message || 'Login failed');
+                toast.error(data.message || 'Sign-up failed');
                 return;
             }
 
-            toast.success(data.message || 'Login successful! Redirecting...');
+            toast.success(data.message || 'Sign-up successful! Redirecting to login...');
             
             // Reset form on success
-            setForm({ email: "", password: "" });
-            setErrors({ email: "", password: "" });
+            setForm({ name: "", email: "", password: "", confirmPassword: "" });
+            setErrors({ name: "", email: "", password: "", confirmPassword: "" });
             
-            // Redirect to dashboard after 2 seconds
+            // Redirect to login after 2 seconds
             setTimeout(() => {
-                window.location.href = '/dashboard';
+                window.location.href = '/login';
             }, 2000);
             
         } catch (err: unknown) {
@@ -84,15 +112,15 @@ export default function LoginPage() {
             }
         } finally {
             setLoading(false);
-        }   
+        }
     };
 
-    const handleGoogleLogin = () => {
+    const handleGoogleSignUp = () => {
         // Implement Google OAuth
         window.location.href = '/api/auth/google';
     };
 
-    const handleGitHubLogin = () => {
+    const handleGitHubSignUp = () => {
         // Implement GitHub OAuth
         window.location.href = '/api/auth/github';
     };
@@ -111,11 +139,27 @@ export default function LoginPage() {
                     />
                 </div>
                 <h2 className="text-3xl font-bold mb-2 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    Welcome Back
+                    Create a new account
                 </h2>
-                <p className="text-center text-gray-600 mb-8">Sign in to your SkillTrackr account</p>
                 
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <input
+                            type="text"
+                            value={form.name}
+                            onChange={(e) => {
+                                setForm({...form, name: e.target.value});
+                                if (errors.name) setErrors({...errors, name: ""});
+                            }}
+                            placeholder="Full Name"
+                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition duration-200 ${
+                                errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
+                            }`}
+                            maxLength={50}
+                        />
+                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                    </div>
+                    
                     <div>
                         <input
                             type="email"
@@ -125,8 +169,8 @@ export default function LoginPage() {
                                 if (errors.email) setErrors({...errors, email: ""});
                             }}
                             placeholder="Email Address"
-                            className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-gray-50/50 backdrop-blur-sm ${
-                                errors.email ? 'border-red-400 focus:ring-red-400' : 'border-gray-200 focus:ring-blue-500 focus:border-blue-500'
+                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition duration-200 ${
+                                errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
                             }`}
                         />
                         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
@@ -141,21 +185,27 @@ export default function LoginPage() {
                                 if (errors.password) setErrors({...errors, password: ""});
                             }}
                             placeholder="Password"
-                            className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-gray-50/50 backdrop-blur-sm ${
-                                errors.password ? 'border-red-400 focus:ring-red-400' : 'border-gray-200 focus:ring-blue-500 focus:border-blue-500'
+                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition duration-200 ${
+                                errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
                             }`}
                         />
                         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                     </div>
                     
-                    <div className="flex items-center justify-between">
-                        <label className="flex items-center">
-                            <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                            <span className="ml-2 text-sm text-gray-600">Remember me</span>
-                        </label>
-                        <a href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-500">
-                            Forgot password?
-                        </a>
+                    <div>
+                        <input
+                            type="password"
+                            value={form.confirmPassword}
+                            onChange={(e) => {
+                                setForm({...form, confirmPassword: e.target.value});
+                                if (errors.confirmPassword) setErrors({...errors, confirmPassword: ""});
+                            }}
+                            placeholder="Confirm Password"
+                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition duration-200 ${
+                                errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
+                            }`}
+                        />
+                        {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
                     </div>
                     
                     <button 
@@ -163,7 +213,7 @@ export default function LoginPage() {
                         disabled={loading}
                         className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-blue-400 disabled:to-purple-400 text-white py-3 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                        {loading ? 'Signing in...' : 'Sign In'}
+                        {loading ? 'Creating Account...' : 'Sign up'}
                     </button>
                 </form>
                 
@@ -179,8 +229,8 @@ export default function LoginPage() {
                     
                     <div className="mt-6 grid grid-cols-2 gap-3">
                         <button
-                            onClick={handleGoogleLogin}
-                            className="w-full inline-flex justify-center py-3 px-4 border border-gray-200 rounded-xl shadow-sm bg-white/80 backdrop-blur-sm text-sm font-medium text-gray-700 hover:bg-white hover:shadow-md transition-all duration-200"
+                            onClick={handleGoogleSignUp}
+                            className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                         >
                             <Image
                                 src="/icons/google-icon.svg"
@@ -193,8 +243,8 @@ export default function LoginPage() {
                         </button>
                         
                         <button
-                            onClick={handleGitHubLogin}
-                            className="w-full inline-flex justify-center py-3 px-4 border border-gray-200 rounded-xl shadow-sm bg-white/80 backdrop-blur-sm text-sm font-medium text-gray-700 hover:bg-white hover:shadow-md transition-all duration-200"
+                            onClick={handleGitHubSignUp}
+                            className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                         >
                             <Image
                                 src="/icons/github-icon.svg"
@@ -209,9 +259,9 @@ export default function LoginPage() {
                 </div>
                 
                 <p className="mt-6 text-center text-sm text-gray-600">
-                    Don&rsquo,t have an account?{' '}
-                    <a href="/signup" className="font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700">
-                        Sign up here
+                    Already have an account?{' '}
+                    <a href="/login" className="font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700">
+                        Log in
                     </a>
                 </p>
             </div>

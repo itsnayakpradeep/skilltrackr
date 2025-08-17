@@ -110,7 +110,7 @@ export default function LoginPage() {
                     </button>
                 </div>
                 <p className={`mt-4 text-center font-${typography.fontFamily.secondary}`}>
-                Don't have an account? <a href="/signup" className={`text-blue-600 font-${typography.fontFamily.secondary}`}>Sign up</a>
+                Don&rsquo;t have an account? <a href="/signup" className={`text-blue-600 font-${typography.fontFamily.secondary}`}>Sign up</a>
                 </p>
             </div>
             <ToastContainer 

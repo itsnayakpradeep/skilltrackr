@@ -3,6 +3,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const [form, setForm] = useState({
@@ -14,6 +16,7 @@ export default function LoginPage() {
         password: ""
     });
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const validateForm = () => {
         const newErrors = {
@@ -50,31 +53,27 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(form),
+            const result = await signIn("credentials", {
+                email: form.email,
+                password: form.password,
+                redirect: false,
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                toast.error(data.message || 'Login failed');
+            if (result?.error) {
+                toast.error(result.error || 'Login failed');
                 return;
             }
 
-            toast.success(data.message || 'Login successful! Redirecting...');
+            toast.success('Login successful! Redirecting...');
             
             // Reset form on success
             setForm({ email: "", password: "" });
             setErrors({ email: "", password: "" });
             
-            // Redirect to dashboard after 2 seconds
+            // Redirect to dashboard
             setTimeout(() => {
-                window.location.href = '/dashboard';
-            }, 2000);
+                router.push('/dashboard');
+            }, 1500);
             
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -88,13 +87,11 @@ export default function LoginPage() {
     };
 
     const handleGoogleLogin = () => {
-        // Implement Google OAuth
-        window.location.href = '/api/auth/google';
+        signIn("google", { callbackUrl: "/dashboard" });
     };
 
     const handleGitHubLogin = () => {
-        // Implement GitHub OAuth
-        window.location.href = '/api/auth/github';
+        signIn("github", { callbackUrl: "/dashboard" });
     };
 
     return (
@@ -209,7 +206,7 @@ export default function LoginPage() {
                 </div>
                 
                 <p className="mt-6 text-center text-sm text-gray-600">
-                    Don&rsquo,t have an account?{' '}
+                    Don't have an account?{' '}
                     <a href="/signup" className="font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700">
                         Sign up here
                     </a>

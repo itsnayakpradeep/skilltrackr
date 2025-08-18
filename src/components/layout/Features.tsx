@@ -5,7 +5,7 @@ import { typography } from '@styles/token/typography';
 const Features = () => {
     return (
         <div className="bg-gray-50 py-12">
-            <h2 className={`text-2xl font-bold  text-center font-heading`}>Features</h2> {/* Add heading for Features */}
+            <h2 className={`text-2xl font-bold text-center font-heading`}>Features</h2> {/* Add heading for Features */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-8">
                 <div className="bg-white p-4 rounded shadow flex flex-col items-center">
                     <Image src="/icons/genetic-engineering-svgrepo-com.svg" alt="Ai Icon" width={64} height={64} />

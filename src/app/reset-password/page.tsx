@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, Suspense } from "react";
 import Image from "next/image";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
     
@@ -253,5 +253,30 @@ export default function ResetPasswordPage() {
                 pauseOnHover
             />
         </div>
+    );
+}
+
+export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+                <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20">
+                    <div className="flex justify-center mb-6">
+                        <div className="w-32 h-10 bg-gray-200 animate-pulse rounded"></div>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="h-8 bg-gray-200 animate-pulse rounded"></div>
+                        <div className="h-4 bg-gray-200 animate-pulse rounded w-3/4 mx-auto"></div>
+                        <div className="space-y-3">
+                            <div className="h-12 bg-gray-200 animate-pulse rounded-xl"></div>
+                            <div className="h-12 bg-gray-200 animate-pulse rounded-xl"></div>
+                            <div className="h-12 bg-gray-200 animate-pulse rounded-xl"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }>
+            <ResetPasswordContent />
+        </Suspense>
     );
 }

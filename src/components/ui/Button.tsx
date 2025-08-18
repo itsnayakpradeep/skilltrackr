@@ -30,7 +30,7 @@ export default function Button({
         border: "none",
         fontWeight: "600",
         fontSize: typography.fontSize.sm,
-        fontFamily: typography.fontFamily.secondary,
+        fontFamily: typography.fontFamily.primary,
         cursor: disabled ? "not-allowed" : "pointer",
         lineHeight: typography.lineHeight.normal,
         display: "inline-block",

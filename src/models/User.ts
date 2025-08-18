@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema(
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         provider: { type: String, default: "credentials" }, // Google, GitHub, credentials, etc.
+        resetPasswordToken: { type: String }, // Added for password reset
+        resetPasswordExpiry: { type: Date }, // Added for password reset
     },
     { timestamps: true }
 );

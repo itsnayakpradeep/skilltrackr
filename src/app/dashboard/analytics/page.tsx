@@ -6,12 +6,9 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { 
   FaChartLine, 
-  FaCalendarAlt,
   FaStar,
   FaTrophy,
   FaClock,
-  FaTasks,
-  FaCheckCircle
 } from "react-icons/fa";
 import {
   LineChart,
@@ -21,12 +18,11 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  LegendPayload,
   ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
-  BarChart,
-  Bar
 } from 'recharts';
 import DashboardLayout from "../../../components/dashboard/DashboardLayout";
 
@@ -353,7 +349,7 @@ function AnalyticsContentWrapper() {
                       boxShadow: '0 8px 25px -5px rgba(0, 0, 0, 0.15)',
                       padding: '12px'
                     }}
-                    formatter={(value: any, name: any) => [
+                    formatter={(value: string | number, name: string) => [
                       <span key="value" style={{ color: '#1f2937', fontWeight: 'bold' }}>{`${value}%`}</span>,
                       <span key="name" style={{ color: '#4b5563', fontWeight: '600' }}>{name}</span>
                     ]}
@@ -368,18 +364,18 @@ function AnalyticsContentWrapper() {
                     height={48}
                     iconType="rect"
                     iconSize={16}
-                    wrapperStyle={{
-                      paddingTop: '20px'
-                    }}
-                    formatter={(value: any, entry: any) => {
-                      const { color } = entry;
+                    wrapperStyle={{ paddingTop: '20px' }}
+                    formatter={(value: string | number, entry: LegendPayload) => {
+                      const color = entry.color || '#374151';
                       return (
-                        <span style={{ 
-                          color: '#374151', 
-                          fontWeight: 600, 
-                          fontSize: '14px',
-                          marginLeft: '8px'
-                        }}>
+                        <span
+                          style={{ 
+                            color: color, 
+                            fontWeight: 600, 
+                            fontSize: '14px',
+                            marginLeft: '8px'
+                          }}
+                        >
                           {value}
                         </span>
                       );
@@ -396,7 +392,7 @@ function AnalyticsContentWrapper() {
                   style={{ backgroundColor: `${category.color}15` }}
                 >
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                       style={{ backgroundColor: `${category.color}25` }} />
+                      style={{ backgroundColor: `${category.color}25` }} />
                   <div className="relative flex items-center">
                     <div 
                       className="w-4 h-4 rounded-full mr-2 flex-shrink-0 shadow-sm" 
@@ -411,7 +407,7 @@ function AnalyticsContentWrapper() {
                   </div>
                   <div className="relative mt-1">
                     <div className="text-xs font-semibold"
-                         style={{ color: category.color }}>
+                        style={{ color: category.color }}>
                       {category.value}%
                     </div>
                   </div>

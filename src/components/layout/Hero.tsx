@@ -1,7 +1,5 @@
 import React from 'react';
 import Button from '@components/ui/Button';
-import Features from './Features'; // Import the new Features component
-import { typography } from '@styles/token/typography';
 
 const Hero = () => {
     return (
@@ -15,9 +13,6 @@ const Hero = () => {
             <Button href="/signup" className="text-lg font-semibold" variant="primary">
                 Get Started
             </Button>
-            {/* Include the Features component */}
-            {/* <Features />  */}
-            
         </div>
     );
 };

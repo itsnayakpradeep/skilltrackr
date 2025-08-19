@@ -1,4 +1,4 @@
-import mongoose, { model } from "mongoose";
+import mongoose, { model, Schema, models } from "mongoose";
 
 const userSchema = new mongoose.Schema(
     {
@@ -12,5 +12,6 @@ const userSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const User = model("User", userSchema);
+// Use existing model if it exists, otherwise create new one
+const User = models.User || model("User", userSchema);
 export default User;

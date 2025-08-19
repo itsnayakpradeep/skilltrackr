@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { 
   FaTachometerAlt, 
   FaChartLine, 
@@ -24,6 +24,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
 
   const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: FaTachometerAlt },
@@ -76,9 +77,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Link
                 key={item.name}
                 href={item.href}
-                className="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200"
+                className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md 
+                ${item.href === pathname ? 'text-indigo-600 bg-indigo-100' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'} 
+                transition-colors duration-200`}
               >
-                <item.icon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
+                <item.icon className={`mr-3 h-5 w-5 ${item.href === pathname ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-500'}`} />
                 {item.name}
               </Link>
             ))}

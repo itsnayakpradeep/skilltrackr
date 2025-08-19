@@ -1,8 +1,0 @@
-feat(auth): Implement mock user authentication
-
-- Created a mock user for testing purposes with email: test@example.com and password: Password@123.
-- Integrated NextAuth.js for handling authentication.
-- Established MongoDB connection for user data storage.
-- Updated user model to include necessary fields for authentication.
-- Added seed script to create mock user in the database.
-- Verified end-to-end authentication flow, including login and dashboard access.
